@@ -1,0 +1,27 @@
+{
+    "name": "kupishoes/leos.partner.php-sdk",
+    "license": "Private",
+    "type": "library",
+    "description": "SDK for interacting with Lamoda B2B Platform",
+    "autoload": {
+        "psr-0": {
+            "LamodaB2B": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5",
+        "monolog/monolog": "1.*",
+        "guzzlehttp/guzzle": "~6.0.2",
+        "kupishoes/leos.partner.dto": "~1.0.0",
+        "doctrine/orm": "~2.2,>=2.2.3"
+    },
+    "suggest": {
+        "kupishoes/leos.partner.php-sdk-bundle": ""
+    },
+    "repositories": {
+        "leos.partner.dto": {
+            "type": "vcs",
+            "url": "git@github.com:pavelsavelyev/lamoda-b2b-platform.dto.git"
+        }
+    }
+}
