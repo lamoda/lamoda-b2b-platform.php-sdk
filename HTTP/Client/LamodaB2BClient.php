@@ -21,9 +21,13 @@ class LamodaB2BClient
     const URI_API_V1_SHIPMENTS_OUT        = '/api/v1/shipments/out';
     const URI_API_V1_ORDERS               = '/api/v1/orders';
     const URI_API_V1_ORDER                = '/api/v1/orders/%s';
+    const URI_API_V1_EVENTS               = '/api/v1/orders/%s/events';
     const URI_API_V1_NOMENCLATURES        = '/api/v1/nomenclatures';
     const URI_API_V1_FULFILMENT_SHIPMENTS = '/api/v1/shipments/fulfilment';
     const URI_API_V1_GET_STOCK_STATE      = '/api/v1/stock/goods';
+
+    const EVENT_CONFIRM = 'confirm';
+    const EVENT_CANCEL = 'cancel';
 
     /** @var Sender */
     protected $sender;
@@ -91,6 +95,32 @@ class LamodaB2BClient
     public function sendFulfilmentShipment(FulfilmentShipment $fulfilmentShipment, $partnerCode)
     {
         return $this->sendRequest($partnerCode, self::URI_API_V1_FULFILMENT_SHIPMENTS, Sender::METHOD_POST, $fulfilmentShipment);
+    }
+
+    /**
+     * @param string $orderId
+     * @param string $partnerCode
+     *
+     * @return \LamodaB2B\HTTP\Response\Response
+     */
+    public function confirmOrder($orderId, $partnerCode)
+    {
+        return $this->sendRequest($partnerCode, sprintf(self::URI_API_V1_EVENTS, $orderId), Sender::METHOD_POST, [
+            'type' => self::EVENT_CONFIRM,
+        ]);
+    }
+
+    /**
+     * @param string $orderId
+     * @param string $partnerCode
+     *
+     * @return \LamodaB2B\HTTP\Response\Response
+     */
+    public function cancelOrder($orderId, $partnerCode)
+    {
+        return $this->sendRequest($partnerCode, sprintf(self::URI_API_V1_EVENTS, $orderId), Sender::METHOD_POST, [
+            'type' => self::EVENT_CANCEL,
+        ]);
     }
 
     /**
