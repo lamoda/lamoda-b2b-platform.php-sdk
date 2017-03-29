@@ -22,6 +22,7 @@ class LamodaB2BClient
     const URI_API_V1_ORDERS               = '/api/v1/orders';
     const URI_API_V1_ORDER                = '/api/v1/orders/%s';
     const URI_API_V1_EVENTS               = '/api/v1/orders/%s/events';
+    const URI_API_V1_STATUSES             = '/api/v1/orders/%s/statuses';
     const URI_API_V1_NOMENCLATURES        = '/api/v1/nomenclatures';
     const URI_API_V1_FULFILMENT_SHIPMENTS = '/api/v1/shipments/fulfilment';
     const URI_API_V1_GET_STOCK_STATE      = '/api/v1/stock/goods';
@@ -159,6 +160,31 @@ class LamodaB2BClient
     {
         $accessToken = $this->getAccessToken($partnerCode);
         $uri = sprintf(self::URI_API_V1_ORDER, $trackingId);
+
+        $orderResponse = $this->sender->sendRequest(
+            $uri,
+            Sender::METHOD_GET,
+            $this->getHeaders([
+                'Authorization' => $this->getAuthString($accessToken),
+            ])
+        );
+
+        $this->parseResponse($orderResponse);
+
+        return $orderResponse->getBody();
+    }
+
+    /**
+     * @param $partnerCode
+     * @param $trackingId
+     *
+     * @return string
+     * @throws HttpRequestException
+     */
+    public function getOrderStatuses($partnerCode, $trackingId)
+    {
+        $accessToken = $this->getAccessToken($partnerCode);
+        $uri = sprintf(self::URI_API_V1_STATUSES, $trackingId);
 
         $orderResponse = $this->sender->sendRequest(
             $uri,
