@@ -9,6 +9,7 @@ use LamodaB2B\HTTP\Response\Response as HttpResponse;
 use LamodaB2B\Storage\AccessTokenStorageInterface;
 use LeosPartnerDto\Dto\Fulfilment\FulfilmentShipment;
 use LeosPartnerDto\Dto\Fulfilment\Nomenclature;
+use LeosPartnerDto\Dto\Order\OrderDtoItem;
 use LeosPartnerDto\Dto\Order\OrderDtoOrder;
 use LeosPartnerDto\Dto\Shipment\Out\ShipmentOutDtoShipment;
 use LamodaB2B\HTTP\Exception\HttpRequestException;
@@ -26,6 +27,7 @@ class LamodaB2BClient
     const URI_API_V1_NOMENCLATURES        = '/api/v1/nomenclatures';
     const URI_API_V1_FULFILMENT_SHIPMENTS = '/api/v1/shipments/fulfilment';
     const URI_API_V1_GET_STOCK_STATE      = '/api/v1/stock/goods';
+    const URI_API_V1_ORDER_ITEMS          = '/api/v1/orders/%s%s/items';
 
     const EVENT_CONFIRM = 'confirm';
     const EVENT_CANCEL = 'cancel';
@@ -63,6 +65,20 @@ class LamodaB2BClient
     public function sendOrder(OrderDtoOrder $order, $partnerCode)
     {
         return $this->sendRequest($partnerCode, self::URI_API_V1_ORDERS, Sender::METHOD_POST, $order);
+    }
+
+    /**
+     * @param OrderDtoItem $item
+     * @param string       $partnerCode
+     * @param string       $orderNr
+     *
+     * @return HttpResponse
+     */
+    public function sendOrderItem(OrderDtoItem $item, $partnerCode, $orderNr)
+    {
+        $uri = sprintf(self::URI_API_V1_ORDER_ITEMS, $partnerCode, $orderNr);
+
+        return $this->sendRequest($partnerCode, $uri, Sender::METHOD_POST, $item);
     }
 
     /**
