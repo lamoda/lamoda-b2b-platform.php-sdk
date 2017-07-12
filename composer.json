@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.5",
         "monolog/monolog": "1.*",
-        "guzzlehttp/guzzle": "~6.0.2",
+        "guzzlehttp/guzzle": "~6.0",
         "kupishoes/leos.partner.dto": "~1.0",
         "doctrine/orm": "~2.2,>=2.2.3"
     },
