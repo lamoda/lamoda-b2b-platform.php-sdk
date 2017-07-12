@@ -4,8 +4,8 @@
     "type": "library",
     "description": "SDK for interacting with Lamoda B2B Platform",
     "autoload": {
-        "psr-0": {
-            "LamodaB2B": "src/"
+        "psr-4": {
+            "LamodaB2B\\": "src/"
         }
     },
     "require": {
