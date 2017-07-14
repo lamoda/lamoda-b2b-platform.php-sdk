@@ -8,8 +8,13 @@
             "LamodaB2B\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\LamodaB2B\\": "tests/"
+        }
+    },
     "require": {
-        "php": ">=5.5",
+        "php": ">=7.0",
         "monolog/monolog": "1.*",
         "guzzlehttp/guzzle": "~6.0",
         "kupishoes/leos.partner.dto": "~1.0",
@@ -23,5 +28,8 @@
             "type": "vcs",
             "url": "git@github.com:pavelsavelyev/lamoda-b2b-platform.dto.git"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
     }
 }
