@@ -2,10 +2,10 @@
 
 namespace LamodaB2B\HTTP\Client;
 
-use LamodaB2B\HTTP\Exception\InvalidArgumentException;
-use LamodaB2B\HTTP\Model\AccessToken;
 use LamodaB2B\HTTP\ConstantMessage;
 use LamodaB2B\HTTP\Exception\HttpRequestException;
+use LamodaB2B\HTTP\Model\AccessToken;
+use LamodaB2B\Storage\AuthStorageInterface;
 
 class AuthLamodaB2BClient
 {
@@ -17,35 +17,35 @@ class AuthLamodaB2BClient
     /** @var string */
     protected $grantType;
 
-    /** @var array */
-    protected $authConfig;
+    /** @var  AuthStorageInterface */
+    protected $authStorage;
 
     /**
      * @param Sender $sender
      * @param string $grantType
-     * @param array  $authConfig
+     * @param AuthStorageInterface $authStorage
      */
     public function __construct(
-        Sender $sender,
-               $grantType,
-        array  $authConfig
+        Sender               $sender,
+        string               $grantType,
+        AuthStorageInterface $authStorage
 
     ) {
-        $this->sender       = $sender;
-        $this->grantType    = $grantType;
-        $this->authConfig   = $authConfig;
+        $this->sender      = $sender;
+        $this->grantType   = $grantType;
+        $this->authStorage = $authStorage;
     }
 
     /**
-     * @param string $partnerCode
+     * @param string $identity
      *
      * @return AccessToken
      *
      * @throws HttpRequestException
      */
-    public function getAccessToken($partnerCode)
+    public function getAccessToken(string $identity = null): AccessToken
     {
-        $tokenResponse = $this->getNewAccessToken($partnerCode);
+        $tokenResponse = $this->getNewAccessToken($identity);
 
         if (!$tokenResponse->isSuccess()) {
             throw new HttpRequestException(ConstantMessage::FAILED_TO_GET_TOKEN);
@@ -62,35 +62,19 @@ class AuthLamodaB2BClient
     }
 
     /**
-     * @param string $partnerCode
-     *
+     * @param null|string $identity
      * @return \LamodaB2B\HTTP\Response\Response
-     *
-     * @throws HttpRequestException
      */
-    protected function getNewAccessToken($partnerCode)
+    protected function getNewAccessToken(string $identity = null)
     {
+        $auth = $this->authStorage->get($identity);
+
         return $this->sender->sendRequest(
             self::URI_AUTH_TOKEN, Sender::METHOD_GET, $this->getHeaders(), null, [
-            'client_id'     => $this->getAuthParameter($partnerCode, 'client_id'),
-            'client_secret' => $this->getAuthParameter($partnerCode, 'client_secret'),
+            'client_id'     => $auth->getClientId(),
+            'client_secret' => $auth->getClientSecret(),
             'grant_type'    => $this->grantType,
         ]);
-    }
-
-    /**
-     * @param string $partnerCode
-     * @param string $parameterName
-     *
-     * @return string
-     */
-    protected function getAuthParameter($partnerCode, $parameterName)
-    {
-        if (empty($this->authConfig[$partnerCode][$parameterName])) {
-            throw new InvalidArgumentException(sprintf(ConstantMessage::MISSING_AUTH_PARAMETER, $parameterName, $partnerCode));
-        }
-
-        return $this->authConfig[$partnerCode][$parameterName];
     }
 
     /**
