@@ -2,7 +2,7 @@ PHP SDK for interacting with Lamoda B2B Platform
 ================================================
 
 ## Software
-1. PHP >5.5
+1. PHP >7.0
 2. Guzzle Http >6.0.2
 3. Monolog
 4. Lamoda B2B Platform DTOs
