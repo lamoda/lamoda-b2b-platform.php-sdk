@@ -1,8 +1,8 @@
 {
     "name": "lamoda/lamoda-b2b-platform.php-sdk",
-    "license": "Apache-2.0",
     "type": "library",
     "description": "SDK for interacting with Lamoda B2B Platform",
+    "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
             "LamodaB2B\\": "src/"
@@ -21,13 +21,7 @@
         "doctrine/orm": "~2.2,>=2.2.3"
     },
     "suggest": {
-        "kupishoes/leos.partner.php-sdk-bundle": ""
-    },
-    "repositories": {
-        "leos.partner.dto": {
-            "type": "vcs",
-            "url": "git@github.com:lamoda/lamoda-b2b-platform.dto.git"
-        }
+        "lamoda/lamoda-b2b-platform.php-sdk-bundle": ""
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1"
