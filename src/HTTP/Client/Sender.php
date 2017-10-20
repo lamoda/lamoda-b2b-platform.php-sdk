@@ -72,8 +72,9 @@ class Sender
         } catch (BadResponseException $e) {
             $result   = $e->getResponse();
             $response = $this->createResponse($result->getStatusCode(), $result->getBody(), $result->getHeaders());
+            $logLevel = $response->getCode() === Response::HTTP_NOT_FOUND ? LogLevel::INFO : LogLevel::ERROR;
 
-            $this->log(LogLevel::ERROR,
+            $this->log($logLevel,
                 ConstantMessage::HTTP_REQUEST_FAILED,
                 $this->prepareLogContext(array_merge(
                     [
