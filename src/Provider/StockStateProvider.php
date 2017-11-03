@@ -44,10 +44,12 @@ class StockStateProvider
 
     /**
      * @param array $items
+     * @param string|null $dcNumber
+     * @param string|null $storageLocation
      *
      * @return StockStateDto
      */
-    public function buildStockDto(array $items)
+    public function buildStockDto(array $items, $dcNumber = null, $storageLocation = null)
     {
         $stockState      = new StockStateDto();
         $stockStateItems = new ArrayCollection();
@@ -56,6 +58,13 @@ class StockStateProvider
             $itemDto = new StockStateItemDto();
             $itemDto->setSku($item['sku']);
             $itemDto->setOnHandQuantity($item['quantity']);
+
+            if (null !== $dcNumber) {
+                $itemDto->setDCNumber($dcNumber);
+            }
+            if (null !== $storageLocation) {
+                $itemDto->setStorageLocation($storageLocation);
+            }
 
             $stockStateItems->add($itemDto);
         }
