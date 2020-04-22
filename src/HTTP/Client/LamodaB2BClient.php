@@ -28,6 +28,7 @@ class LamodaB2BClient
     const URI_API_V1_FULFILMENT_SHIPMENTS = '/api/v1/shipments/fulfilment';
     const URI_API_V1_GET_STOCK_STATE      = '/api/v1/stock/goods';
     const URI_API_V1_ORDER_ITEMS          = '/api/v1/orders/%s%s/items';
+    const URI_API_V1_MAPPING_CATEGORIES   = '/api/v1/mapping/categories';
 
     const EVENT_CONFIRM = 'confirm';
     const EVENT_CANCEL = 'cancel';
@@ -256,6 +257,34 @@ class LamodaB2BClient
         $this->parseTrackingResponse($packTrackingResponse);
 
         return $packTrackingResponse->getBody();
+    }
+
+    /**
+     * @param string $partnerCode
+     * @param array $params
+     *
+     * @return array
+     * @throws HttpRequestException
+     */
+    public function getMappingCategories(string $partnerCode, array $params): array
+    {
+        $accessToken = $this->getAccessToken($partnerCode);
+
+        $response = $this->sender->sendRequest(
+            self::URI_API_V1_MAPPING_CATEGORIES,
+            Sender::METHOD_GET,
+            $this->getHeaders(
+                [
+                    'Authorization' => $this->getAuthString($accessToken),
+                ]
+            ),
+            null,
+            $params
+        );
+
+        $this->parseResponse($response);
+
+        return $response->getBody();
     }
 
     /**
