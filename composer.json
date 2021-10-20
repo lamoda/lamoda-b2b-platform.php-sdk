@@ -14,9 +14,9 @@
         }
     },
     "require": {
-        "php": ">=7.0",
-        "monolog/monolog": "1.*",
-        "guzzlehttp/guzzle": "~6.0",
+        "php": ">=7.2",
+        "monolog/monolog": "^2.3",
+        "guzzlehttp/guzzle": "^7.3.0",
         "lamoda/lamoda-b2b-platform.dto": "~1.0",
         "doctrine/orm": "~2.2,>=2.2.3"
     },
